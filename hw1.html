@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Calendar</title>
+    <link rel="stylesheet" href="hw1.css" type="text/css">
+  </head>
+  <body>
+      <table>
+        <thead>
+            <tr>
+              <th colspan="7" id="yearmonth">0000年 00月</th>
+            </tr>
+            <tr>
+              <th class="sun">日</th>
+              <th>月</th>
+              <th>火</th>
+              <th>水</th>
+              <th>木</th>
+              <th>金</th>
+              <th class='sat'>土</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="tData sun"></td>
+              <td class="tData"></td>
+              <td class="tData"></td>
+              <td class="tData"></td>
+              <td class="tData"></td>
+              <td class="tData"></td>
+              <td class="tData sat"></td>
+            </tr>
+            <tr>
+              <td class="tData sun"></td>
+              <td class="tData"></td>
+              <td class="tData"></td>
+              <td class="tData"></td>
+              <td class="tData"></td>
+              <td class="tData"></td>
+              <td class="tData sat"></td>
+            </tr>
+            <tr>
+              <td class="tData sun"></td>
+              <td class="tData"></td>
+              <td class="tData"></td>
+              <td class="tData"></td>
+              <td class="tData"></td>
+              <td class="tData"></td>
+              <td class="tData sat"></td>
+            </tr>
+            <tr>
+              <td class="tData sun"></td>
+              <td class="tData"></td>
+              <td class="tData"></td>
+              <td class="tData"></td>
+              <td class="tData"></td>
+              <td class="tData"></td>
+              <td class="tData sat"></td>
+            </tr>
+            <tr>
+              <td class="tData sun"></td>
+              <td class="tData"></td>
+              <td class="tData"></td>
+              <td class="tData"></td>
+              <td class="tData"></td>
+              <td class="tData"></td>
+              <td class="tData sat"></td>
+            </tr>
+            <tr>
+              <td class="tData sun"></td>
+              <td class="tData"></td>
+              <td class="tData"></td>
+              <td class="tData"></td>
+              <td class="tData"></td>
+              <td class="tData"></td>
+              <td class="tData sat"></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div id='addModal' class="modal">
+            <div class="modal-content">
+                <p>00日 일정 추가</p>
+                <input type="text" name="list" autofocus>
+                <br>
+                <input type="button" name="add" value="Add">
+                <input type="button" name="cancel" value="Cancel" onclick="closeAddBox()">
+            </div>
+        </div>
+
+        <div id='chgModal' class="modal">
+            <div class="modal-content">
+                <p>일정 변경</p>
+                <p>일정 날짜 변경: <input type="date" name="list" required></p>
+                <p class='inline'>일정 순서 변경: <input type="number" name="listNum" min="1" required></p>
+                <input type="button" name="save" value="Save">
+                <input type="button" name="delete" value="Delete">
+            </div>
+        </div>
+
+      <script src="hw1.js"></script>
+      <script>
+        init();
+      </script>
+    </body>
+</html>
