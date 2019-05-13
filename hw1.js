@@ -58,32 +58,44 @@ function addList(tdNum) {
 }
 
 function changePopup(tdNum, listNum) {
-    let tempM = [Math.floor((today.getMonth() + 1) / 10), (today.getMonth() + 1) % 10];
-    let tempD = [Math.floor((tdNum - startCal + 1) / 10), (tdNum - startCal + 1) % 10];
-    let listLength = tData[tdNum].getElementsByTagName('div').length;
-    let fullDate = today.getFullYear() + "-" + tempM[0] + tempM[1] + "-" + tempD[0] + tempD[1];
-    let chgDBtn = chgmodal.getElementsByTagName('input')[0];
-    let chgLBtn = chgmodal.getElementsByTagName('input')[1];
-    chgLBtn.removeAttribute('disabled');
+  setChangePopupInputButton(tdNum, listNum); // 일정 변경 팝업창의 버튼 기본 값 및 이벤트 세팅
+    setChangePopupButtonClickEvent(); // 버튼을 눌러 값이 변경되었을 때 동작을 세팅
+}
 
-    chgDBtn.value = fullDate;
-    chgLBtn.value = (listNum + 1);
-    chgLBtn.setAttribute('max', listLength);
-    chgmodal.getElementsByTagName('input')[2].setAttribute('onclick', 'chgList(' + tdNum + ',' + listNum + ')');
-    chgmodal.getElementsByTagName('input')[3].setAttribute('onclick', 'dltList(' + tdNum + ',' + listNum + ')');
+function setChangePopupInputButton(tdNum, listNum) {
+  let numberOfThisDaySchedule = tData[tdNum].getElementsByTagName('div').length;
+  let originalDate = [Math.floor((tdNum - startCal + 1) / 10), (tdNum - startCal + 1) % 10];
+  let fullDate = today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + originalDate[0] + originalDate[1];
+  alert(fullDate);
+  let selectDateToChangeButton = chgmodal.getElementsByTagName('input')[0];
+  let selectOrderToChangeButton = chgmodal.getElementsByTagName('input')[1];
+  selectOrderToChangeButton.removeAttribute('disabled');
 
-    chgmodal.style.display = "block";
+  selectDateToChangeButton.value = fullDate; // 오늘을 나타내는 값을 날짜 변경 초기 값으로 설정
+  selectOrderToChangeButton.value = (listNum + 1); // 해당 날짜의 클릭한 일정의 인덱스 값이 listNum이므로 +1을 해주어 보기 쉽게함.
+  selectOrderToChangeButton.setAttribute('max', numberOfThisDaySchedule); // 해당 날짜의 일정 개수를 선택가능한 max값으로 설정해줌.
 
-    window.onchange = function (event) {
-        if (event.target === chgDBtn) {
-            if(fullDate === chgDBtn.value ){
-                chgLBtn.removeAttribute('disabled');
-            }
-            else{
-                chgLBtn.setAttribute('disabled', 'true');
-            }
-        }
-    }
+  chgmodal.getElementsByTagName('input')[2].setAttribute('onclick', 'chgList(' + tdNum + ',' + listNum + ')'); // Save 버튼을 누른 경우(일정 순서 변경)
+  chgmodal.getElementsByTagName('input')[3].setAttribute('onclick', 'dltList(' + tdNum + ',' + listNum + ')'); // Delete 버튼을 누른 경우(일정 삭제)
+}
+
+function setChangePopupButtonClickEvent() {
+  let fullDate = today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + today.getDay();
+  let selectDateToChangeButton = chgmodal.getElementsByTagName('input')[0];
+  let selectOrderToChangeButton = chgmodal.getElementsByTagName('input')[1];
+
+  chgmodal.style.display = "block";
+
+  window.onchange = function (event) {
+      if (event.target === selectDateToChangeButton) {
+          if(fullDate === selectDateToChangeButton.value ){
+              selectOrderToChangeButton.removeAttribute('disabled');
+          }
+          else{
+              selectOrderToChangeButton.setAttribute('disabled', 'true');
+          }
+      }
+  }
 }
 
 function chgList(tdNum, listNum) {
