@@ -41,21 +41,42 @@ function addPopup(tdNum) {
     addmodal.style.display = "block";
 }
 
+function addPopup(tdNum) {
+    addmodal.getElementsByTagName('p')[0].innerHTML = (tdNum - startCal + 1) + '日 일정 추가';
+    addmodal.getElementsByTagName('input')[0].value = '';
+    addmodal.getElementsByTagName('input')[1].setAttribute('onclick', 'addList(' + tdNum + ')');
+    addmodal.style.display = "block";
+}
+
 function addList(tdNum) {
-    let div = document.createElement('div');
-    let btn = document.createElement('button');
-    let inputTxt = addmodal.getElementsByTagName('input')[0].value;
-    if (inputTxt !== '') {
-        p = document.createElement('input');
-        p.value = inputTxt;
-        btn.setAttribute('onclick', 'changePopup(' + tdNum + ',' + tData[tdNum].getElementsByTagName('div').length + ')');
-        btn.classList.add('changeBtn');
-        btn.innerHTML = '&times';
-        div.appendChild(p);
-        div.appendChild(btn);
-        tData[tdNum].appendChild(div);
-    }
-    closeAddBox();
+  let div = document.createElement('div');
+  let schedule = addList_newSchedule();
+
+  if(schedule){
+    let btn = addList_button(tdNum);
+    div.appendChild(schedule);
+    div.appendChild(btn);
+    tData[tdNum].appendChild(div);
+  }
+  closeAddBox();
+}
+
+function addList_newSchedule() {
+  let inputTxt = addmodal.getElementsByTagName('input')[0].value;
+  if (inputTxt !== '') {
+    let p = document.createElement('input');
+    p.value = inputTxt;
+    return p;
+  }
+  return false;
+}
+
+function addList_button(tdNum) {
+  let btn = document.createElement('button');
+  btn.setAttribute('onclick', 'changePopup(' + tdNum + ',' + tData[tdNum].getElementsByTagName('div').length + ')');
+  btn.classList.add('changeBtn');
+  btn.innerHTML = '&times';
+  return btn;
 }
 
 function changePopup(tdNum, listNum) {
