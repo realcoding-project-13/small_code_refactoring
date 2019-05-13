@@ -11,20 +11,27 @@ function init() {
     yearmonth.innerHTML = today.getFullYear() + '年 ' + (today.getMonth() + 1) + '月'; // 년월 출력
 
     for (i = startCal; i < lastDate.getDate() + startCal; i++) {
-        let date = i - startCal + 1;
-        tData[i].innerHTML = date;
-        tData[i].classList.add('tData');
-        if (i === today.getDate() + startCal - 1) { // 현재
-            tData[i].style.backgroundColor = '#96e3ff';
-            tData[i].setAttribute('ondblclick', 'addPopup(' + i + ')');
-        } else if (i < today.getDate() + startCal - 1) { // 지난 날
-            tData[i].style.backgroundColor = '#e3e4ea';
-        } else { // 남은 날
-            tData[i].style.backgroundColor = '#d9e8ce';
-            tData[i].setAttribute('ondblclick', 'addPopup(' + i + ')');
-        }
+            setDateToCalendar(i);
+            setColorToDay(i);
     }
 
+}
+function setDateToCalendar(index){
+    let date = index - startCal + 1;
+    tData[index].innerHTML = date;
+    tData[index].classList.add('tData');
+}
+function setColorToDay(index){
+    let dateForIteration = today.getDate() + startCal - 1 ;
+    if (index === dateForIteration) { // 현재
+        tData[index].style.backgroundColor = '#96e3ff';
+        tData[index].setAttribute('ondblclick', 'addPopup(' + i + ')');
+    } else if (index < dateForIteration) { // 지난 날
+        tData[index].style.backgroundColor = '#e3e4ea';
+    } else { // 남은 날
+        tData[index].style.backgroundColor = '#d9e8ce';
+        tData[index].setAttribute('ondblclick', 'addPopup(' + i + ')');
+    }
 }
 
 function addPopup(tdNum) {
@@ -86,32 +93,32 @@ function chgList(tdNum, listNum) {
     let chgNum = (document.getElementById('chgModal').getElementsByTagName('input')[1].value - 1);
     let splitDate = chgDBtn.value.split('-');
 
-    try{
-      if (splitDate[0]*1 !== today.getFullYear() || splitDate[1]*1 !== (today.getMonth() + 1))
-          throw "이번달이 아닌 날로 이동이 불가능합니다";
-
-      if(splitDate[2]*1 < today.getDate())
-          throw "지난 날로 이동이 불가능합니다";
-
-      if ((tdNum - startCal + 1) !== splitDate[2]*1)
-          chgListDate(splitDate[2] * 1 + startCal - 1, divObj);
-
-      else if (listNum !== chgNum)
-          chgListNum(tdNum, listNum, chgNum, divObj);
-
-      reNumList(tdNum);
+    if (splitDate[0]*1 !== today.getFullYear() || splitDate[1]*1 !== (today.getMonth() + 1)) {
+        alert("이번달이 아닌 날로 이동이 불가능합니다");
     }
-    catch(e){
-      alert(e);
+
+    else if ((tdNum - startCal + 1) !== splitDate[2]*1){
+        if (splitDate[2]*1 < today.getDate()){
+            alert("지난 날로 이동이 불가능합니다");
+        }
+        else {
+            chgListDate(splitDate[2] * 1 + startCal - 1, divObj);
+
+            for (let i = 0; i < tData[tdNum].getElementsByTagName('div').length; i++) {
+                tData[tdNum].getElementsByTagName('div')[i].getElementsByTagName('button')[0].setAttribute('onclick', 'changePopup(' + tdNum + ',' + i + ')');
+            }
+        }
+    }
+
+    else if (listNum !== chgNum) {
+        chgListNum(tdNum, listNum, chgNum, divObj);
+
+        for(let i = 0; i<tData[tdNum].getElementsByTagName('div').length;i++){
+            tData[tdNum].getElementsByTagName('div')[i].getElementsByTagName('button')[0].setAttribute('onclick', 'changePopup(' + tdNum + ',' + i + ')');
+        }
     }
 
     document.getElementById('chgModal').style.display = "none";
-}
-
-function reNumList(tdNum){
-  for(let i = 0; i<tData[tdNum].getElementsByTagName('div').length;i++){
-      tData[tdNum].getElementsByTagName('div')[i].getElementsByTagName('button')[0].setAttribute('onclick', 'changePopup(' + tdNum + ',' + i + ')');
-  }
 }
 
 function chgListDate(tdNum, divObj){
