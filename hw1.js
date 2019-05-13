@@ -86,32 +86,32 @@ function chgList(tdNum, listNum) {
     let chgNum = (document.getElementById('chgModal').getElementsByTagName('input')[1].value - 1);
     let splitDate = chgDBtn.value.split('-');
 
-    if (splitDate[0]*1 !== today.getFullYear() || splitDate[1]*1 !== (today.getMonth() + 1)) {
-        alert("이번달이 아닌 날로 이동이 불가능합니다");
+    try{
+      if (splitDate[0]*1 !== today.getFullYear() || splitDate[1]*1 !== (today.getMonth() + 1))
+          throw "이번달이 아닌 날로 이동이 불가능합니다";
+
+      if(splitDate[2]*1 < today.getDate())
+          throw "지난 날로 이동이 불가능합니다";
+
+      if ((tdNum - startCal + 1) !== splitDate[2]*1)
+          chgListDate(splitDate[2] * 1 + startCal - 1, divObj);
+
+      else if (listNum !== chgNum)
+          chgListNum(tdNum, listNum, chgNum, divObj);
+
+      reNumList(tdNum);
     }
-
-    else if ((tdNum - startCal + 1) !== splitDate[2]*1){
-        if (splitDate[2]*1 < today.getDate()){
-            alert("지난 날로 이동이 불가능합니다");
-        }
-        else {
-            chgListDate(splitDate[2] * 1 + startCal - 1, divObj);
-
-            for (let i = 0; i < tData[tdNum].getElementsByTagName('div').length; i++) {
-                tData[tdNum].getElementsByTagName('div')[i].getElementsByTagName('button')[0].setAttribute('onclick', 'changePopup(' + tdNum + ',' + i + ')');
-            }
-        }
-    }
-
-    else if (listNum !== chgNum) {
-        chgListNum(tdNum, listNum, chgNum, divObj);
-
-        for(let i = 0; i<tData[tdNum].getElementsByTagName('div').length;i++){
-            tData[tdNum].getElementsByTagName('div')[i].getElementsByTagName('button')[0].setAttribute('onclick', 'changePopup(' + tdNum + ',' + i + ')');
-        }
+    catch(e){
+      alert(e);
     }
 
     document.getElementById('chgModal').style.display = "none";
+}
+
+function reNumList(tdNum){
+  for(let i = 0; i<tData[tdNum].getElementsByTagName('div').length;i++){
+      tData[tdNum].getElementsByTagName('div')[i].getElementsByTagName('button')[0].setAttribute('onclick', 'changePopup(' + tdNum + ',' + i + ')');
+  }
 }
 
 function chgListDate(tdNum, divObj){
