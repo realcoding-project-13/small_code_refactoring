@@ -22,11 +22,10 @@ function setDateToCalendar(index){
     tData[index].classList.add('tData');
 }
 function setColorToDay(index){
-    let dateForIteration = today.getDate() + startCal - 1 ;
-    if (index === dateForIteration) { // 현재
+    if (index === today.getDate() + startCal - 1 ) { // 현재
         tData[index].style.backgroundColor = '#96e3ff';
         tData[index].setAttribute('ondblclick', 'addPopup(' + i + ')');
-    } else if (index < dateForIteration) { // 지난 날
+    } else if (index < today.getDate() + startCal - 1 ) { // 지난 날
         tData[index].style.backgroundColor = '#e3e4ea';
     } else { // 남은 날
         tData[index].style.backgroundColor = '#d9e8ce';
